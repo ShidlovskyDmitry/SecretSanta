@@ -9,16 +9,17 @@ namespace SecretSantaNetFrameWork
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
-            // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
+                routeTemplate: "{controller}/{name}");
+
+
+            config.Routes.MapHttpRoute(
+                name: "Shuffle",
+            routeTemplate: "{controller}");
+
         }
     }
 }
