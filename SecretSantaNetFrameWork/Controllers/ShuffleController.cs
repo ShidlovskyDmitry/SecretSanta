@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SecretSantaNetFrameWork.Models;
 using System.Net.Http;
 using System.Text;
-using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
 
 namespace SecretSantaNetFrameWork.Controllers
 {
@@ -14,6 +10,7 @@ namespace SecretSantaNetFrameWork.Controllers
         // GET: Shuffle
         public HttpResponseMessage Get()
         {
+            SecretBox.Shuffle();
             return new HttpResponseMessage()
             {
                 Content = new StringContent(
