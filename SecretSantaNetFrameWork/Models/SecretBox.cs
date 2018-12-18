@@ -42,29 +42,34 @@ namespace SecretSantaNetFrameWork.Models
 
                 foreach (var name in box.GetListOfNames())
                 {
+                    if (box.ValidateBox(name) == BoxValidationResult.Failure)
+                    {
+                        break;
+                    }
 
                     while (box.NoteCount != 0)
                     {
+
+                        if (box.ValidateBox(name) == BoxValidationResult.Failure)
+                        {
+                            break;
+                        }
+
                         var note = box.GetRandomNote();
                         if (note.ExcludedName == name || note.Name == name)
                         {
-                            if (box.NoteCount == 0)
-                            {
-                                break;
-                            }
-
                             box.Add(note);
                             continue;
                         }
 
                         couples.Add(name, note.Name);
 
-                        if (box.NoteCount == 0)
-                        {
-                            shuffled = true;
-                        }
-
                         break;
+                    }
+
+                    if (box.NoteCount == 0)
+                    {
+                        shuffled = true;
                     }
                 }
             }

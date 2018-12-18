@@ -6,10 +6,38 @@ namespace SecretSantaNetFrameWork.Models
 {
     public class Box
     {
+
         public Box()
         {
             NoteList = new List<Note>();
             random = new Random();
+        }
+
+        public BoxValidationResult ValidateBox(string name)
+        {
+            if (NoteList.Count > 2)
+            {
+                return BoxValidationResult.Success;
+            }
+
+
+            if (NoteList.Count == 2)
+            {
+                if (NoteList.First().Name == NoteList.Last().ExcludedName)
+                {
+                    return BoxValidationResult.Failure;
+                }
+            }
+
+            if (NoteList.Count == 1)
+            {
+                if (NoteList.Single().Name == name || NoteList.Single().ExcludedName == name)
+                {
+                    return BoxValidationResult.Failure;
+                }
+            }
+
+            return BoxValidationResult.Success;
         }
 
         public void Add(Note note)
@@ -19,7 +47,18 @@ namespace SecretSantaNetFrameWork.Models
 
         public IEnumerable<string> GetListOfNames()
         {
-            return NoteList.Select(item => (Note)item.Clone()).ToList().Select(note => note.Name);
+            var list = NoteList.Select(item => (Note)item.Clone()).ToList().Select(note => note.Name).ToList();
+
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                var value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
+            return list;
         }
 
         public Note GetRandomNote()
